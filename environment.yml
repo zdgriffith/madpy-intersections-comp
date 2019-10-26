@@ -1,0 +1,8 @@
+name: int-comp
+channels:
+  - conda-forge
+dependencies:
+  - jupyter
+  - pandas
+  - scikit-learn
+
