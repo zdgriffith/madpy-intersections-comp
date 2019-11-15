@@ -1,0 +1,57 @@
+---
+title: "kaggle_ml"
+author: "Koranda"
+date: "11/14/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(lmSupport)
+```
+
+
+```{r}
+df <- read_csv("kaggle_df/train.csv")
+
+df_phil<-df %>% 
+	filter(City == "Philadelphia")
+
+
+```
+
+
+what are the main directions
+
+```{r}
+df_directions <- df_phil %>% 
+	filter(EntryHeading==ExitHeading) 
+
+
+unique(df_phil$Hour)
+
+
+```
+
+
+```{r}
+df_bins<-df_directions %>% 
+	mutate(time_b = ntile(Hour, 8),
+				 lat_b = ntile(Latitude, 10), 
+				 lon_b = ntile(Longitude, 10)) 
+
+```
+
+
+```{r}
+m_1<-lm(TotalTimeStopped_p80~time_b*lat_b*lon_b*EntryHeading, 
+				data = df_bins)
+summary(m_1)
+
+
+modelEffectSizes(m_1)
+
+```
+
